@@ -18,6 +18,17 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-
+// POST a new workout
+// Create a Workout db instance and save it
+router.post('/', (req, res) => {
+  try {
+    const newWorkout = new Workout(req.body)
+    newWorkout
+      .save()
+      .then(dbWorkout => res.status(201).json(dbWorkout))
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
 
 module.exports = router
