@@ -23,9 +23,26 @@ router.put('/:id', async (req, res) => {
 router.post('/', (req, res) => {
   try {
     const newWorkout = new Workout(req.body)
-    newWorkout
-      .save()
-      .then(dbWorkout => res.status(201).json(dbWorkout))
+    newWorkout.save().then(dbWorkout => res.status(201).json(dbWorkout))
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
+
+// Render page with all currently posted workouts
+// Sort the workouts by date in descending order
+router.get('/', async (req, res) => {
+  try {
+    const workouts = await Workout.find({}).sort({ date: -1 })
+
+    workouts.forEach(workout => {
+      let time = 0
+      workout.exercises.forEach(exercise => {
+        totalTime += exercise.duration
+      })
+      workout.totalDuration = time
+    })
+    res.json(workouts)
   } catch (err) {
     res.status(400).json(err)
   }
