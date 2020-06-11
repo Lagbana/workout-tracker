@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const compression = require('compression')
-const morgan = require('morgan')
+const logger = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
@@ -12,22 +12,19 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.use(compression())
-app.use(morgan('dev'))
-app.use(cors())
+// app.use(compression())
+app.use(logger('dev'))
+// app.use(cors())
 
-mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/workoutTracker',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-  }
-)
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+})
 
 // Use api workouts route with api.js route handler
-app.use('api/workouts', require('./routes/api.js'))
+app.use('/api/workouts', require('./routes/api.js'))
 
 // Display the exercise.html page
 app.get('/exercise', (req, res) => {
