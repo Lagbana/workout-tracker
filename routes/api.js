@@ -1,37 +1,53 @@
+// Import dependencies
 const router = require('express').Router()
-const Workout = require('../models/Workout')
+const { Workout } = require('../models')
 
-router.post('/api/workout', ({ body }, res) => {
-  Workout.create(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout)
-    })
-    .catch(err => {
-      res.status(400).json(err)
-    })
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedWorkout = await Workout.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { exercises: req.body } },
+      { new: true }
+    )
+    res.json(updatedWorkout)
+  } catch (err) {
+    res.status(400).json(err)
+  }
 })
 
-router.post('/api/workout/bulk', ({ body }, res) => {
-  Workout.insertMany(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout)
-    })
-    .catch(err => {
-      res.status(400).json(err)
-    })
+// POST a new workout
+// Create a new instance of workout
+// Save it, then send the new workout back to the client
+router.post('/', (req, res, next) => {
+  const newWorkout = new Workout(req.body)
+  newWorkout
+    .save()
+    .then(dbWorkout => res.status(201).json(dbWorkout))
+    .catch(next)
 })
 
 // Render page with all currently posted workouts
 // Sort the workouts by date in descending order
-router.get('/api/workouts', (req, res) => {
-  Workout.find({})
-    .sort({ date: -1 })
-    .then(dbWorkout => {
-      res.json(dbWorkout)
+router.get('/', async (req, res) => {
+  try {
+    const workouts = await Workout.find({})
+    // console.log(workouts)
+    workouts.forEach(workout => {
+      let totalTime = 0
+      workout.exercises.forEach(exercise => {
+        totalTime += exercise.duration
+      })
+      workout.totalDuration = totalTime
     })
-    .catch(err => {
-      res.status(400).json(err)
-    })
+
+    res.json(workouts)
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
+
+router.get('/range', (req, res) => {
+  res.status(307).redirect('/api/workouts')
 })
 
 module.exports = router
