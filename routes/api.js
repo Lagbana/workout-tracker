@@ -48,4 +48,10 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Handles workout range route
+router.get('/range', (req, res) => {
+  res.status(307).redirect('/api/workouts')
+})
+
+
 module.exports = router
