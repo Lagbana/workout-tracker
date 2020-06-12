@@ -17,6 +17,7 @@ router.put('/:id', async (req, res) => {
     res.json(updatedWorkout)
   } catch (err) {
     res.status(400).json(err)
+    throw err
   }
 })
 
@@ -30,6 +31,7 @@ router.post('/', (req, res) => {
     newWorkout.save().then(dbWorkout => res.status(201).json(dbWorkout))
   } catch (err) {
     res.status(400).json(err)
+    throw err
   }
 })
 
@@ -44,13 +46,14 @@ router.get('/', async (req, res) => {
     workouts.forEach(workout => {
       let time = 0
       workout.exercises.forEach(exercise => {
-        totalTime += exercise.duration
+        time += exercise.duration
       })
       workout.totalDuration = time
     })
     res.json(workouts)
   } catch (err) {
     res.status(400).json(err)
+    throw err
   }
 })
 
