@@ -42,7 +42,6 @@ router.post('/', (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const workouts = await Workout.find({})
-
     workouts.forEach(workout => {
       let time = 0
       workout.exercises.forEach(exercise => {
