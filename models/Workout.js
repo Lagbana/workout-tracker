@@ -1,5 +1,13 @@
+// Import mongoose to create database schema
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
+// Workout schema with properties
+/*
+  *day property: current date
+  *exercises: array of exercise properties
+  *total duration: total time for exercises completed
+*/
 
 const workoutSchema = new Schema({
   day: {
@@ -16,12 +24,11 @@ const workoutSchema = new Schema({
       },
       type: {
         type: String,
-        required: 'Enter the type of training',
-        trim: true
+        trim: true,
+        required: 'Enter the type of training'
       },
       weight: {
-        type: Number,
-        trim: true
+        type: Number
       },
       sets: {
         type: Number
@@ -30,8 +37,7 @@ const workoutSchema = new Schema({
         type: Number
       },
       duration: {
-        type: Number,
-        required: 'Please enter the duration of this workout'
+        type: Number
       },
       distance: {
         type: Number

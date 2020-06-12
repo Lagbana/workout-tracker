@@ -53,5 +53,4 @@ router.get('/range', (req, res) => {
   res.status(307).redirect('/api/workouts')
 })
 
-
 module.exports = router
