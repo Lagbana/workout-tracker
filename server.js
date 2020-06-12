@@ -7,15 +7,18 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
 
+
 // Set up Express app
 const app = express()
 
 // Set up the Express app for handle data parsing
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+// Allow the static resources to be served up on the client
 app.use(express.static('public'))
 
-app.use(compression())
+// app.use(compression())
 app.use(logger('dev'))
 app.use(cors())
 
@@ -27,8 +30,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
   useCreateIndex: true
 })
 
+
 // Use api workouts route with api.js route handler
-app.use('/api/workouts', require('./routes/api.js'))
+const routes = require('./routes/api.js')
+app.use('/api/workouts', routes)
 
 // Display the exercise.html page
 app.get('/exercise', (req, res) => {
