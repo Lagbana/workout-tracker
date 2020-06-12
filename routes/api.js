@@ -2,9 +2,11 @@
 const router = require('express').Router()
 const { Workout } = require('../models')
 
-// UPDATE a workout
-// Use a workout's id to find it
-// Push the user input in the request body into the database
+/*
+  UPDATE the most recent workout
+  Use a workout's id to find it
+  Push the user input in the request body into the database
+*/
 router.put('/:id', async (req, res) => {
   try {
     const updatedWorkout = await Workout.findOneAndUpdate(
@@ -18,8 +20,10 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-// POST a new workout
-// Create a Workout db instance and save it
+/*
+  POST a new workout
+  Create a Workout db instance and save it
+*/
 router.post('/', (req, res) => {
   try {
     const newWorkout = new Workout(req.body)
@@ -29,8 +33,10 @@ router.post('/', (req, res) => {
   }
 })
 
-// Render page with all currently posted workouts
-// Sort the workouts by date in descending order
+/*
+  Render page with all currently posted workouts
+  Sort the workouts by date in descending order
+*/
 router.get('/', async (req, res) => {
   try {
     const workouts = await Workout.find({})
@@ -49,6 +55,7 @@ router.get('/', async (req, res) => {
 })
 
 // Handles workout range route
+// Displays workout statistics and performance charts
 router.get('/range', (req, res) => {
   res.status(307).redirect('/api/workouts')
 })
