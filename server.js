@@ -19,7 +19,7 @@ app.use(compression())
 app.use(logger('dev'))
 app.use(cors())
 
-// Setup connection to mongoDB
+// Setup connection to mongoDB with access to remote production Database and local development Database
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
