@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
 // Sort the workouts by date in descending order
 router.get('/', async (req, res) => {
   try {
-    const workouts = await Workout.find({}).sort({ date: -1 })
+    const workouts = await Workout.find({})
 
     workouts.forEach(workout => {
       let time = 0
