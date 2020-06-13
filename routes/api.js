@@ -25,10 +25,10 @@ router.put('/:id', async (req, res) => {
   POST a new workout
   Create a Workout db instance and save it
 */
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const newWorkout = new Workout(req.body)
-    newWorkout.save().then(dbWorkout => res.status(201).json(dbWorkout))
+    const newWorkout = await Workout.create(req.body)
+    res.status(201).json(newWorkout)
   } catch (err) {
     res.status(400).json(err)
     throw err
